@@ -144,3 +144,76 @@
     -fx-font-size: 11px;
     -fx-text-fill: -naval-hull-gray;
 }
+
+.hint-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: -naval-hull-gray;
+}
+
+.title-label-light {
+    -fx-font-size: 20px;
+    -fx-font-weight: 800;
+    -fx-text-fill: white;
+    -fx-letter-spacing: 1.5px;
+}
+
+.remaining-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -naval-water-gray;
+}
+
+.ghost-button-light {
+    -fx-background-color: rgba(255, 255, 255, 0.12);
+    -fx-border-color: rgba(255, 255, 255, 0.6);
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 8 14 8 14;
+    -fx-cursor: hand;
+}
+.ghost-button-light:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.22);
+}
+
+.grid-header {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -naval-hull-gray;
+}
+
+.fleet-panel {
+    -fx-padding: 4 0 0 0;
+}
+
+.fleet-row {
+    -fx-padding: 4;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+.fleet-row:hover {
+    -fx-background-color: derive(-naval-water-gray, 40%);
+}
+
+.fleet-row-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: -naval-ink;
+}
+
+.rotate-icon-button {
+    -fx-background-color: -naval-water-gray;
+    -fx-text-fill: -naval-deep-blue;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 50%;
+    -fx-min-width: 26;
+    -fx-min-height: 26;
+    -fx-max-width: 26;
+    -fx-max-height: 26;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+}
+.rotate-icon-button:hover {
+    -fx-background-color: derive(-naval-water-gray, -15%);
+}

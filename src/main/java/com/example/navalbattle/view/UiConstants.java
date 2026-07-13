@@ -31,6 +31,21 @@ public final class UiConstants {
     /** Alto mínimo permitido de la ventana de bienvenida. */
     public static final double WELCOME_MIN_HEIGHT = 480;
 
+    /** Ruta del FXML de la vista de colocación de flota. */
+    public static final String BOARD_SETUP_VIEW_FXML = "/com/example/navalbattle/view/board-setup-view.fxml";
+
+    /** Título de la ventana de colocación de flota. */
+    public static final String BOARD_SETUP_TITLE = APP_TITLE + " — Colocación de flota";
+
+    /** Ancho por defecto de la ventana de colocación de flota. */
+    public static final double BOARD_SETUP_WIDTH = 760;
+
+    /** Alto por defecto de la ventana de colocación de flota. */
+    public static final double BOARD_SETUP_HEIGHT = 680;
+
+    /** Alto mínimo permitido de la ventana de colocación de flota. */
+    public static final double BOARD_SETUP_MIN_HEIGHT = 560;
+
     private UiConstants() {
     }
 }

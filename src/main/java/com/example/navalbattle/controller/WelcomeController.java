@@ -3,10 +3,14 @@ package com.example.navalbattle.controller;
 import com.example.navalbattle.exceptions.GameStateCorruptedException;
 import com.example.navalbattle.model.GameSnapshot;
 import com.example.navalbattle.persistence.GameRepository;
+import com.example.navalbattle.view.BoardSetupStage;
 import com.example.navalbattle.view.UiConstants;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 /**
  * Controlador de {@code welcome-view.fxml}: despacha las tres acciones
@@ -78,11 +82,24 @@ public class WelcomeController {
     }
 
     /**
-     * Maneja el clic en "Nuevo juego".
+     * Maneja el clic en "Nuevo juego": abre {@link BoardSetupStage} y
+     * oculta esta ventana (no la cierra) para poder volver a mostrarla
+     * si el jugador presiona "Volver" en la siguiente pantalla.
      */
     @FXML
     private void handleNewGameAction() {
-        // TODO: navegar a BoardSetupStage cuando esa vista exista (siguiente entregable).
+        try {
+            BoardSetupStage boardSetupStage = new BoardSetupStage();
+            boardSetupStage.getController().setPreviousStage(currentStage());
+            boardSetupStage.show();
+            currentStage().hide();
+        } catch (IOException exception) {
+            showErrorAlert("No se pudo abrir la pantalla de colocación de barcos.");
+        }
+    }
+
+    private Stage currentStage() {
+        return (Stage) newGameButton.getScene().getWindow();
     }
 
     /**
