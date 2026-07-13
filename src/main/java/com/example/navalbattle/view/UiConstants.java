@@ -46,6 +46,21 @@ public final class UiConstants {
     /** Alto mínimo permitido de la ventana de colocación de flota. */
     public static final double BOARD_SETUP_MIN_HEIGHT = 560;
 
+    /** Ruta del FXML de la vista de combate. */
+    public static final String GAME_VIEW_FXML = "/com/example/navalbattle/view/game-view.fxml";
+
+    /** Título de la ventana de combate. */
+    public static final String GAME_TITLE = APP_TITLE + " — Combate";
+
+    /** Ancho por defecto de la ventana de combate. */
+    public static final double GAME_WIDTH = 820;
+
+    /** Alto por defecto de la ventana de combate. */
+    public static final double GAME_HEIGHT = 620;
+
+    /** Alto mínimo permitido de la ventana de combate. */
+    public static final double GAME_MIN_HEIGHT = 500;
+
     private UiConstants() {
     }
 }
