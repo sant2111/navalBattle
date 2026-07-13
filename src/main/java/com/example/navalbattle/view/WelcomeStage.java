@@ -3,6 +3,7 @@ package com.example.navalbattle.view;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -36,6 +37,12 @@ public class WelcomeStage extends Stage {
 
         Scene scene = new Scene(root, UiConstants.WELCOME_WIDTH, UiConstants.WELCOME_HEIGHT);
         scene.getStylesheets().add(getClass().getResource(UiConstants.MAIN_STYLESHEET).toExternalForm());
+        // TODO: atajo temporal solo de desarrollo, quitar junto con ShipShowcaseStage antes de la entrega.
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.F9) {
+                new ShipShowcaseStage().show();
+            }
+        });
 
         setTitle(UiConstants.APP_TITLE);
         setScene(scene);
