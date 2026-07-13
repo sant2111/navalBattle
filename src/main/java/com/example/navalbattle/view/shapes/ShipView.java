@@ -2,11 +2,10 @@ package com.example.navalbattle.view.shapes;
 
 import com.example.navalbattle.model.Orientation;
 import com.example.navalbattle.model.ShipType;
-import com.example.navalbattle.view.GameColors;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 import java.util.HashSet;
@@ -208,13 +207,14 @@ public abstract class ShipView extends Group {
         setOpacity(sunk ? 0.55 : 1.0);
     }
 
-    private Circle buildHitOverlay(int cellIndex) {
+    private Node buildHitOverlay(int cellIndex) {
+        double markerSize = thickness() * 0.5;
         double along = cellIndex * cellSize + cellSize / 2 - cellSize * INNER_MARGIN_FACTOR;
         double across = thickness() / 2;
-        Circle marker = new Circle(x(along, across), y(along, across), thickness() * 0.22);
-        marker.setFill(GameColors.HIT_MARK_OUTER);
-        marker.setStroke(GameColors.HULL_BORDER);
-        marker.setStrokeWidth(1);
+
+        HitMarkerView marker = new HitMarkerView(markerSize);
+        marker.setLayoutX(x(along, across) - markerSize / 2);
+        marker.setLayoutY(y(along, across) - markerSize / 2);
         return marker;
     }
 }
