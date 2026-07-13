@@ -100,32 +100,52 @@ heurística responde. Prioridad para este proyecto:
 
 **Fecha:** 2026-07-12
 **Última rama activa:** `jorge-view` (creada desde `master`, nunca mergeada aún)
-**Último commit:** `9a169ad` — feat(view): agrega WelcomeStage con menu de inicio e instrucciones ilustradas
+**Último commit:** `0d98576` — feat(view): agrega BoardSetupStage con colocacion de flota por arrastre
 **Componentes visuales completados:**
 - Estructura MVC de paquetes con `package-info.java` (commit `5472e85`).
 - `WelcomeStage` + `welcome-view.fxml` + `WelcomeController`: pantalla de
-  inicio con "Nuevo juego", "Cargar último juego" (deshabilitado hasta que
-  se inyecte un `GameRepository` real) y "Ver tablero del oponente
-  (verificación)" (HU-3, aún sin acción real — pendiente del modelo).
-- Sin campo de apodo: se agregó en el primer borrador pero Jorge decidió
-  quitarlo por no ser un requisito del enunciado.
-- Instrucciones de juego numeradas + leyenda de símbolos (agua/tocado/
-  hundido) con explicación de significado junto a cada ícono, dentro de
-  un `ScrollPane` para que nada se recorte en pantallas pequeñas.
-- Figuras 2D propias (sin imágenes externas): `ShipIcon`, `WaterMarkIcon`,
-  `HitMarkIcon`, `SunkMarkIcon` — estas tres últimas están pensadas para
-  reutilizarse tal cual en el tablero de juego real.
+  inicio con "Nuevo juego" (ya navega a `BoardSetupStage`), "Cargar último
+  juego" (deshabilitado hasta que se inyecte un `GameRepository` real) y
+  "Ver tablero del oponente (verificación)" (HU-3, aún sin acción real).
+  Sin campo de apodo (se descartó por no ser requisito del enunciado).
+  Instrucciones numeradas + leyenda de símbolos, dentro de un `ScrollPane`.
+- `BoardSetupStage` + `board-setup-view.fxml` + `BoardSetupController`:
+  colocación de la flota fija (1 portaaviones, 2 submarinos, 3 destructores,
+  4 fragatas; sin separación obligatoria entre barcos) sobre una grilla
+  10x10 (`GridBoardPane`/`BoardCell`) por arrastrar y soltar, con
+  resaltado verde/rojo en tiempo real. Un barco ya colocado se puede
+  volver a arrastrar para moverlo o rotar con doble clic. Pila (`Deque`)
+  para "Deshacer", Lista para la flota pendiente, colocación aleatoria y
+  reinicio de tablero. "Comenzar partida" solo un `Alert` provisional
+  (TODO: navegar a `GameStage` cuando exista el modelo/IA).
+- **Figuras 2D de barcos rediseñadas** en `view.shapes` (paquete nuevo):
+  `ShipView` (clase base, template method) + `CarrierView`/`SubmarineView`/
+  `DestroyerView`/`FrigateView` (siluetas navales reconocibles, con
+  torretas/torres/cañones según el tipo) + `ShipViewFactory` (patrón
+  creacional Factory Method/Simple Factory — cumple el requisito del
+  enunciado) + `WaterMarkerView`/`HitMarkerView`/`SunkMarkerView`
+  (marcadores de estado). Paleta centralizada en `view/GameColors.java`.
+  `ShipShowcaseStage` (F9 desde Welcome) es una vista de aprobación
+  temporal, NO va al producto final — quitar antes de entregar.
+  Las figuras viejas (`ShipIcon`, `WaterMarkIcon`, `HitMarkIcon`,
+  `SunkMarkIcon` en `view/`, usadas solo en la leyenda de Welcome) siguen
+  vigentes ahí; no se migraron a `view.shapes` porque cumplen un propósito
+  distinto (ilustrar la leyenda, no representar barcos reales del tablero).
 - Stubs mínimos de contrato para compañeros: `model.GameSnapshot`,
   `persistence.GameRepository` (⚠️ pendiente de acordar con persistencia),
   y las 3 excepciones propias (`InvalidShipPlacementException`,
   `OutOfBoundsShotException`, `GameStateCorruptedException`).
+- `model.ShipType` (CARRIER/SUBMARINE/DESTROYER/FRIGATE, con la flota
+  confirmada) y `model.Orientation` son stubs de Jorge — ⚠️ el equipo de
+  modelo debe confirmarlos/extenderlos antes de construir `Board`/`Ship`.
 - Se reemplazó el scaffold de IntelliJ por `NavalBattleApp` como entry point.
 - Verificado visualmente ejecutando `mvn javafx:run` (JAVA_HOME apuntando
   a `~/.jdks/corretto-17.0.19` en esta máquina).
 
-**Próxima tarea pendiente:** construir la vista de colocación de barcos
-(drag-and-drop al tablero) que consumen los botones "Nuevo juego"/"Cargar
-último juego" — ahora mismo esos handlers solo tienen un `TODO` porque esa
-vista no existe todavía. También pendiente: abrir PR de `jorge-view` a
-`master` una vez el equipo dé el visto bueno al contrato de `GameRepository`
-y `GameSnapshot`.
+**Próxima tarea pendiente:**
+1. Quitar `ShipShowcaseStage` y el atajo F9 antes de la entrega final.
+2. Construir la vista de combate (tablero propio + tablero rival) que
+   consume "Comenzar partida".
+3. Abrir PR de `jorge-view` a `master` una vez el equipo dé el visto bueno
+   a los contratos de `GameRepository`, `GameSnapshot`, `ShipType` y
+   `Orientation`.
