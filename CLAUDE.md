@@ -99,11 +99,33 @@ heurística responde. Prioridad para este proyecto:
 ## ESTADO ACTUAL DEL PROYECTO
 
 **Fecha:** 2026-07-12
-**Última rama activa:** `jorge-view` (creada desde `master`)
-**Último commit:** pendiente (setup en curso — pom.xml a Java 17 + este CLAUDE.md)
-**Componentes visuales completados:** ninguno todavía (scaffold por defecto de
-IntelliJ sigue presente: `HelloApplication`, `HelloController`, `hello-view.fxml`;
-se reemplaza en el PASO 3 al crear `WelcomeStage`).
-**Próxima tarea pendiente:** PASO 2 — crear estructura de paquetes MVC
-(`model`, `view`, `controller`, `persistence`, `exceptions` + `package-info.java`
-en cada uno) y carpetas `resources/view/`, `resources/styles/`.
+**Última rama activa:** `jorge-view` (creada desde `master`, nunca mergeada aún)
+**Último commit:** `9a169ad` — feat(view): agrega WelcomeStage con menu de inicio e instrucciones ilustradas
+**Componentes visuales completados:**
+- Estructura MVC de paquetes con `package-info.java` (commit `5472e85`).
+- `WelcomeStage` + `welcome-view.fxml` + `WelcomeController`: pantalla de
+  inicio con "Nuevo juego", "Cargar último juego" (deshabilitado hasta que
+  se inyecte un `GameRepository` real) y "Ver tablero del oponente
+  (verificación)" (HU-3, aún sin acción real — pendiente del modelo).
+- Sin campo de apodo: se agregó en el primer borrador pero Jorge decidió
+  quitarlo por no ser un requisito del enunciado.
+- Instrucciones de juego numeradas + leyenda de símbolos (agua/tocado/
+  hundido) con explicación de significado junto a cada ícono, dentro de
+  un `ScrollPane` para que nada se recorte en pantallas pequeñas.
+- Figuras 2D propias (sin imágenes externas): `ShipIcon`, `WaterMarkIcon`,
+  `HitMarkIcon`, `SunkMarkIcon` — estas tres últimas están pensadas para
+  reutilizarse tal cual en el tablero de juego real.
+- Stubs mínimos de contrato para compañeros: `model.GameSnapshot`,
+  `persistence.GameRepository` (⚠️ pendiente de acordar con persistencia),
+  y las 3 excepciones propias (`InvalidShipPlacementException`,
+  `OutOfBoundsShotException`, `GameStateCorruptedException`).
+- Se reemplazó el scaffold de IntelliJ por `NavalBattleApp` como entry point.
+- Verificado visualmente ejecutando `mvn javafx:run` (JAVA_HOME apuntando
+  a `~/.jdks/corretto-17.0.19` en esta máquina).
+
+**Próxima tarea pendiente:** construir la vista de colocación de barcos
+(drag-and-drop al tablero) que consumen los botones "Nuevo juego"/"Cargar
+último juego" — ahora mismo esos handlers solo tienen un `TODO` porque esa
+vista no existe todavía. También pendiente: abrir PR de `jorge-view` a
+`master` una vez el equipo dé el visto bueno al contrato de `GameRepository`
+y `GameSnapshot`.
