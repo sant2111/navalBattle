@@ -3,6 +3,7 @@ package com.example.navalbattle.controller;
 import com.example.navalbattle.model.Orientation;
 import com.example.navalbattle.model.ShipType;
 import com.example.navalbattle.view.BoardCell;
+import com.example.navalbattle.view.GameStage;
 import com.example.navalbattle.view.GridBoardPane;
 import com.example.navalbattle.view.GridCoordinate;
 import com.example.navalbattle.view.shapes.ShipViewFactory;
@@ -21,6 +22,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -428,12 +430,28 @@ public class BoardSetupController {
         }
     }
 
+    /**
+     * Maneja el clic en "Comenzar partida": abre {@link GameStage}.
+     * <p>
+     * ⚠️ IMPACTO AL EQUIPO: por ahora {@link GameStage} solo muestra el
+     * layout del tablero de combate; falta conectar la flota realmente
+     * colocada y la lógica de turnos/disparos una vez exista el motor
+     * real de modelo/IA.
+     */
     @FXML
     private void handleStartGameAction() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION,
-                "Flota lista. El tablero de combate se habilitará cuando el equipo conecte la lógica del juego.");
+        try {
+            GameStage gameStage = new GameStage();
+            gameStage.show();
+            ((Stage) startGameButton.getScene().getWindow()).close();
+        } catch (IOException exception) {
+            showErrorAlert("No se pudo abrir el tablero de combate.");
+        }
+    }
+
+    private void showErrorAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, message);
         alert.setHeaderText(null);
         alert.showAndWait();
-        // TODO: navegar a GameStage con la flota colocada cuando el modelo/IA estén listos.
     }
 }
