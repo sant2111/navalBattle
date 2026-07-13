@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import com.example.navalbattle.view.ShipIcon?>
+<?import com.example.navalbattle.view.WaterMarkIcon?>
+<?import com.example.navalbattle.view.HitMarkIcon?>
+<?import com.example.navalbattle.view.SunkMarkIcon?>
+
+<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.example.navalbattle.controller.WelcomeController"
+           styleClass="welcome-root">
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" maxWidth="480" styleClass="welcome-scroll">
+        <VBox fx:id="mainContainer" alignment="TOP_CENTER" spacing="16" styleClass="welcome-container">
+            <padding>
+                <Insets top="30" right="34" bottom="30" left="34"/>
+            </padding>
+
+            <ShipIcon/>
+            <Label text="BATALLA NAVAL" styleClass="title-label"/>
+            <Label text="Hunde la flota enemiga antes de que hundan la tuya" styleClass="subtitle-label" wrapText="true"/>
+
+            <Separator styleClass="section-divider"/>
+
+            <VBox spacing="10" styleClass="actions-section">
+                <Button fx:id="newGameButton" text="Nuevo juego" maxWidth="Infinity"
+                        styleClass="primary-button" onAction="#handleNewGameAction"/>
+                <Button fx:id="loadGameButton" text="Cargar último juego" maxWidth="Infinity"
+                        styleClass="secondary-button" onAction="#handleLoadGameAction"/>
+                <Button fx:id="viewOpponentBoardButton" text="Ver tablero del oponente (verificación)" maxWidth="Infinity"
+                        styleClass="tertiary-button" onAction="#handleViewOpponentBoardAction"/>
+            </VBox>
+
+            <VBox spacing="14" styleClass="instructions-panel">
+                <Label text="¿CÓMO JUGAR?" styleClass="section-header"/>
+
+                <HBox spacing="10" styleClass="step-row" alignment="TOP_LEFT">
+                    <StackPane styleClass="step-badge">
+                        <Circle radius="12" styleClass="step-badge-circle"/>
+                        <Label text="1" styleClass="step-badge-number"/>
+                    </StackPane>
+                    <Label text="Elige &quot;Nuevo juego&quot; o &quot;Cargar último juego&quot;." styleClass="step-text" wrapText="true" maxWidth="330"/>
+                </HBox>
+
+                <HBox spacing="10" styleClass="step-row" alignment="TOP_LEFT">
+                    <StackPane styleClass="step-badge">
+                        <Circle radius="12" styleClass="step-badge-circle"/>
+                        <Label text="2" styleClass="step-badge-number"/>
+                    </StackPane>
+                    <Label text="Coloca tus barcos arrastrándolos al tablero." styleClass="step-text" wrapText="true" maxWidth="330"/>
+                </HBox>
+
+                <HBox spacing="10" styleClass="step-row" alignment="TOP_LEFT">
+                    <StackPane styleClass="step-badge">
+                        <Circle radius="12" styleClass="step-badge-circle"/>
+                        <Label text="3" styleClass="step-badge-number"/>
+                    </StackPane>
+                    <Label text="Por turnos, dispara a una coordenada del tablero rival: columna de la A a la J, fila del 1 al 10." styleClass="step-text" wrapText="true" maxWidth="330"/>
+                </HBox>
+
+                <HBox spacing="10" styleClass="step-row" alignment="TOP_LEFT">
+                    <StackPane styleClass="step-badge">
+                        <Circle radius="12" styleClass="step-badge-circle"/>
+                        <Label text="4" styleClass="step-badge-number"/>
+                    </StackPane>
+                    <Label text="Gana quien hunda primero toda la flota rival." styleClass="step-text" wrapText="true" maxWidth="330"/>
+                </HBox>
+
+                <Separator styleClass="section-divider-thin"/>
+
+                <Label text="¿QUÉ SIGNIFICA CADA SÍMBOLO?" styleClass="section-header"/>
+
+                <HBox spacing="10" alignment="TOP_LEFT">
+                    <WaterMarkIcon/>
+                    <VBox spacing="2">
+                        <Label text="Agua" styleClass="legend-word"/>
+                        <Label text="El disparo no impactó ningún barco." styleClass="legend-description" wrapText="true" maxWidth="320"/>
+                    </VBox>
+                </HBox>
+
+                <HBox spacing="10" alignment="TOP_LEFT">
+                    <HitMarkIcon/>
+                    <VBox spacing="2">
+                        <Label text="Tocado" styleClass="legend-word"/>
+                        <Label text="El disparo impactó parte de un barco, pero aún no está hundido." styleClass="legend-description" wrapText="true" maxWidth="320"/>
+                    </VBox>
+                </HBox>
+
+                <HBox spacing="10" alignment="TOP_LEFT">
+                    <SunkMarkIcon/>
+                    <VBox spacing="2">
+                        <Label text="Hundido" styleClass="legend-word"/>
+                        <Label text="Se impactaron todas las partes de ese barco: quedó destruido." styleClass="legend-description" wrapText="true" maxWidth="320"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </VBox>
+    </ScrollPane>
+</StackPane>
