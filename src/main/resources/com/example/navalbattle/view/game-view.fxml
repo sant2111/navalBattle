@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import com.example.navalbattle.view.GridBoardPane?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.navalbattle.controller.GameController"
+            styleClass="welcome-root">
+
+    <top>
+        <VBox alignment="CENTER" spacing="4" styleClass="setup-header">
+            <padding>
+                <Insets top="16" right="20" bottom="16" left="20"/>
+            </padding>
+            <Label text="BATALLA NAVAL — COMBATE" styleClass="title-label-light"/>
+            <Label fx:id="turnLabel" styleClass="remaining-label"/>
+        </VBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="true" styleClass="welcome-scroll">
+            <HBox spacing="24" alignment="CENTER" styleClass="welcome-container">
+                <padding>
+                    <Insets top="24" right="28" bottom="24" left="28"/>
+                </padding>
+
+                <VBox alignment="CENTER" spacing="8">
+                    <Label text="TU FLOTA" styleClass="section-header"/>
+                    <GridBoardPane fx:id="ownBoard"/>
+                </VBox>
+
+                <Separator orientation="VERTICAL"/>
+
+                <VBox alignment="CENTER" spacing="8">
+                    <Label text="AGUAS ENEMIGAS" styleClass="section-header"/>
+                    <GridBoardPane fx:id="enemyBoard"/>
+                </VBox>
+            </HBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

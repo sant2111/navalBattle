@@ -1,0 +1,219 @@
+/*
+ * Paleta naval y estilos base compartidos por todas las vistas.
+ * Ninguna vista debe hardcodear colores: siempre referenciar estas
+ * variables (-naval-*) definidas en .root.
+ */
+.root {
+    -naval-deep-blue: #0B3D62;
+    -naval-foam-white: #F4F8FB;
+    -naval-hull-gray: #5C6B73;
+    -naval-hit-red: #D64550;
+    -naval-sunk-orange: #E8871E;
+    -naval-water-gray: #C9D6DF;
+    -naval-ink: #24313A;
+
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+.welcome-root {
+    -fx-background-color: linear-gradient(to bottom right, -naval-deep-blue, derive(-naval-deep-blue, -25%));
+}
+
+.welcome-container {
+    -fx-background-color: -naval-foam-white;
+    -fx-background-radius: 14;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 22, 0.2, 0, 8);
+}
+
+.welcome-scroll,
+.welcome-scroll > .viewport {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+.welcome-scroll {
+    -fx-padding: 24 0 24 0;
+}
+
+.title-label {
+    -fx-font-size: 30px;
+    -fx-font-weight: 800;
+    -fx-text-fill: -naval-deep-blue;
+    -fx-letter-spacing: 2px;
+}
+
+.subtitle-label {
+    -fx-font-size: 13px;
+    -fx-font-style: italic;
+    -fx-text-fill: -naval-hull-gray;
+    -fx-text-alignment: center;
+}
+
+.section-divider .line {
+    -fx-border-color: -naval-water-gray;
+    -fx-border-width: 1.2px;
+    -fx-opacity: 0.9;
+}
+
+.section-divider-thin .line {
+    -fx-border-color: -naval-water-gray;
+    -fx-border-width: 1px;
+    -fx-opacity: 0.6;
+}
+
+.primary-button {
+    -fx-background-color: -naval-deep-blue;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 6;
+    -fx-padding: 10 16 10 16;
+    -fx-cursor: hand;
+}
+.primary-button:hover {
+    -fx-background-color: derive(-naval-deep-blue, 15%);
+}
+.primary-button:disabled {
+    -fx-opacity: 0.5;
+    -fx-cursor: default;
+}
+
+.secondary-button {
+    -fx-background-color: -naval-water-gray;
+    -fx-text-fill: -naval-deep-blue;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 6;
+    -fx-padding: 10 16 10 16;
+    -fx-cursor: hand;
+}
+.secondary-button:disabled {
+    -fx-opacity: 0.5;
+    -fx-cursor: default;
+}
+
+.tertiary-button {
+    -fx-background-color: transparent;
+    -fx-border-color: -naval-hull-gray;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-text-fill: -naval-hull-gray;
+    -fx-font-size: 12px;
+    -fx-padding: 8 16 8 16;
+    -fx-cursor: hand;
+}
+.tertiary-button:hover {
+    -fx-border-color: -naval-deep-blue;
+    -fx-text-fill: -naval-deep-blue;
+}
+
+.instructions-panel {
+    -fx-background-color: derive(-naval-water-gray, 65%);
+    -fx-background-radius: 10;
+    -fx-padding: 16;
+}
+
+.section-header {
+    -fx-font-size: 13px;
+    -fx-font-weight: 800;
+    -fx-letter-spacing: 1.5px;
+    -fx-text-fill: -naval-deep-blue;
+}
+
+.step-badge-circle {
+    -fx-fill: #0B3D62;
+}
+
+.step-badge-number {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+}
+
+.step-text {
+    -fx-font-size: 12.5px;
+    -fx-text-fill: -naval-ink;
+}
+
+.legend-word {
+    -fx-font-size: 12.5px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -naval-ink;
+}
+
+.legend-description {
+    -fx-font-size: 11px;
+    -fx-text-fill: -naval-hull-gray;
+}
+
+.hint-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: -naval-hull-gray;
+}
+
+.title-label-light {
+    -fx-font-size: 20px;
+    -fx-font-weight: 800;
+    -fx-text-fill: white;
+    -fx-letter-spacing: 1.5px;
+}
+
+.remaining-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -naval-water-gray;
+}
+
+.ghost-button-light {
+    -fx-background-color: rgba(255, 255, 255, 0.12);
+    -fx-border-color: rgba(255, 255, 255, 0.6);
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 8 14 8 14;
+    -fx-cursor: hand;
+}
+.ghost-button-light:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.22);
+}
+
+.grid-header {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -naval-hull-gray;
+}
+
+.fleet-panel {
+    -fx-padding: 4 0 0 0;
+}
+
+.fleet-row {
+    -fx-padding: 4;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+.fleet-row:hover {
+    -fx-background-color: derive(-naval-water-gray, 40%);
+}
+
+.fleet-row-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: -naval-ink;
+}
+
+.rotate-icon-button {
+    -fx-background-color: -naval-water-gray;
+    -fx-text-fill: -naval-deep-blue;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 50%;
+    -fx-min-width: 26;
+    -fx-min-height: 26;
+    -fx-max-width: 26;
+    -fx-max-height: 26;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+}
+.rotate-icon-button:hover {
+    -fx-background-color: derive(-naval-water-gray, -15%);
+}
