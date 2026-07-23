@@ -17,7 +17,7 @@ import java.util.List;
  * proponer los ajustes que necesite) con las reglas reales del juego y
  * la IA.
  *
- * @author Jorge Navia
+ * @author Santiago Barragan
  * @version 1.0
  */
 public interface GameEngine {
@@ -54,4 +54,21 @@ public interface GameEngine {
 
     /** @return la flota del jugador, para que la vista la dibuje en su propio tablero */
     List<ShipPlacement> getPlayerFleet();
+
+    /**
+     * Devuelve la flota del oponente (la máquina), para la opción de
+     * verificación que exige el enunciado: "visualizar el tablero de posición
+     * del oponente".
+     * <p>
+     * Es un método por defecto para no romper la compatibilidad: un motor que
+     * no soporte la verificación (por ejemplo, el motor de prueba temporal)
+     * hereda esta versión, que devuelve una lista vacía, sin necesidad de
+     * modificarse. El motor real lo sobrescribe.
+     *
+     * @return las colocaciones de la flota de la máquina, o lista vacía si el
+     *         motor no expone esta información
+     */
+    default List<ShipPlacement> getOpponentFleet() {
+        return List.of();
+    }
 }

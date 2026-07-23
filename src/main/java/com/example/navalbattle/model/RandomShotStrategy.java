@@ -10,7 +10,7 @@ import java.util.Random;
  * Al depender solo de {@link Board#hasBeenShot(Coordinate)}, no "ve" dónde
  * están los barcos: dispara a ciegas, como corresponde a una IA básica.
  *
- * @author Jorge Navia
+ * @author Santiago Barragan
  * @version 1.0
  */
 public class RandomShotStrategy implements ShotStrategy {

@@ -11,7 +11,7 @@ package com.example.navalbattle.model;
  * posiciones reales de los barcos —eso sería hacer trampa— y debe devolver una
  * casilla dentro del tablero que aún no haya sido disparada.
  *
- * @author Jorge Navia
+ * @author Santiago Barragan
  * @version 1.0
  */
 public interface ShotStrategy {

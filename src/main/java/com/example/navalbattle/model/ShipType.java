@@ -15,7 +15,7 @@ package com.example.navalbattle.model;
  * ya depende de esta composición exacta; cualquier cambio debe acordarse
  * con Jorge antes de modificarla.
  *
- * @author Jorge Navia
+ * @author Santiago Barragan
  * @version 1.0
  */
 public enum ShipType {

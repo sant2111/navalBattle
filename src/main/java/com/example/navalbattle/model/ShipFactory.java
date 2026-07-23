@@ -18,7 +18,7 @@ import java.util.List;
  * escalar. Se mantiene simple y explicable como pide el CLAUDE.md, ya que el
  * comportamiento no varía por tipo (solo el tamaño, que aporta {@link ShipType}).
  *
- * @author Jorge Navia
+ * @author Santiago Barragan
  * @version 1.0
  */
 public class ShipFactory {

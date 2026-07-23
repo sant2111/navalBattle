@@ -5,7 +5,7 @@ package com.example.navalbattle.model;
  * <p>
  * // TODO: confirma compañero de modelo — nombres y semántica exactos.
  *
- * @author Jorge Navia
+ * @author Santiago Barragan
  * @version 1.0
  */
 public enum ShotResult {

@@ -6,7 +6,7 @@ package com.example.navalbattle.model;
  * válidos se definen aquí (y la composición de la flota en {@link ShipType}),
  * nunca hardcodeados dentro de la lógica.
  *
- * @author Jorge Navia
+ * @author Santiago Barragan
  * @version 1.0
  */
 public final class GameConstants {

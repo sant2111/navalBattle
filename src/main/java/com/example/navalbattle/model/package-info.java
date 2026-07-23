@@ -9,7 +9,7 @@
  * {@code controller}; no debe implementar ni modificar clases aquí salvo
  * acuerdo explícito con el equipo.
  *
- * @author Jorge Navia
+ * @author Santiago Barragan
  * @version 1.0
  */
 package com.example.navalbattle.model;
