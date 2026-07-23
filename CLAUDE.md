@@ -99,9 +99,8 @@ heurística responde. Prioridad para este proyecto:
 ## ESTADO ACTUAL DEL PROYECTO
 
 **Fecha:** 2026-07-12
-**Última rama activa:** `jorge-view` (push al remoto, PR #1 abierto a `master`:
-https://github.com/sant2111/navalBattle/pull/1, aún sin mergear)
-**Último commit:** `8335a70` — feat(view): agrega tablero de combate con GameEngine y motor de prueba
+**Última rama activa:** `jorge-view` (creada desde `master`, nunca mergeada aún)
+**Último commit:** `0d98576` — feat(view): agrega BoardSetupStage con colocacion de flota por arrastre
 **Componentes visuales completados:**
 - Estructura MVC de paquetes con `package-info.java` (commit `5472e85`).
 - `WelcomeStage` + `welcome-view.fxml` + `WelcomeController`: pantalla de
@@ -117,19 +116,8 @@ https://github.com/sant2111/navalBattle/pull/1, aún sin mergear)
   resaltado verde/rojo en tiempo real. Un barco ya colocado se puede
   volver a arrastrar para moverlo o rotar con doble clic. Pila (`Deque`)
   para "Deshacer", Lista para la flota pendiente, colocación aleatoria y
-  reinicio de tablero. "Comenzar partida" ya abre `GameStage` con la
-  flota real que el jugador colocó.
-- **`GameStage` + `game-view.fxml` + `GameController`**: tablero de
-  combate jugable de punta a punta — tu flota a la vista, aguas
-  enemigas ocultas que se disparan por clic, turno alternado (con pausa
-  breve antes del disparo de la IA), marcadores de agua/tocado/hundido,
-  revelado de silueta al hundir un barco, alerta de victoria/derrota.
-  Corre contra `model.GameEngine` (interfaz, contrato para el modelo/IA
-  real) mediante `controller.MockGameEngine` — motor TEMPORAL de solo
-  pruebas que genera la flota de la IA al azar y resuelve disparos
-  localmente; ⚠️ reemplazar por el motor real del equipo cuando exista
-  (basta con inyectar otra implementación de `GameEngine`, la vista no
-  debería necesitar cambios).
+  reinicio de tablero. "Comenzar partida" solo un `Alert` provisional
+  (TODO: navegar a `GameStage` cuando exista el modelo/IA).
 - **Figuras 2D de barcos rediseñadas** en `view.shapes` (paquete nuevo):
   `ShipView` (clase base, template method) + `CarrierView`/`SubmarineView`/
   `DestroyerView`/`FrigateView` (siluetas navales reconocibles, con
@@ -144,26 +132,20 @@ https://github.com/sant2111/navalBattle/pull/1, aún sin mergear)
   vigentes ahí; no se migraron a `view.shapes` porque cumplen un propósito
   distinto (ilustrar la leyenda, no representar barcos reales del tablero).
 - Stubs mínimos de contrato para compañeros: `model.GameSnapshot`,
-  `model.GameEngine`, `model.ShotResult`/`ShotOutcome`/`AiShotOutcome`,
   `persistence.GameRepository` (⚠️ pendiente de acordar con persistencia),
   y las 3 excepciones propias (`InvalidShipPlacementException`,
   `OutOfBoundsShotException`, `GameStateCorruptedException`).
 - `model.ShipType` (CARRIER/SUBMARINE/DESTROYER/FRIGATE, con la flota
-  confirmada), `model.Orientation` y `model.ShipPlacement` son stubs de
-  Jorge — ⚠️ el equipo de modelo debe confirmarlos/extenderlos antes de
-  construir `Board`/`Ship`.
+  confirmada) y `model.Orientation` son stubs de Jorge — ⚠️ el equipo de
+  modelo debe confirmarlos/extenderlos antes de construir `Board`/`Ship`.
 - Se reemplazó el scaffold de IntelliJ por `NavalBattleApp` como entry point.
 - Verificado visualmente ejecutando `mvn javafx:run` (JAVA_HOME apuntando
   a `~/.jdks/corretto-17.0.19` en esta máquina).
-- Resumen del progreso ya se le compartió al equipo por WhatsApp (con la
-  aclaración de que `MockGameEngine` es solo lógica de prueba, no real).
 
 **Próxima tarea pendiente:**
 1. Quitar `ShipShowcaseStage` y el atajo F9 antes de la entrega final.
-2. Cuando el equipo tenga el motor real de modelo/IA, reemplazar
-   `MockGameEngine` por la implementación real de `GameEngine` en
-   `BoardSetupController.handleStartGameAction`.
-3. Conectar `persistence.GameRepository` real (botón "Cargar último
-   juego" ya está listo en la vista, solo esperando la implementación).
-4. Seguir el PR #1 hasta que el equipo lo revise y se pueda mergear a
-   `master`.
+2. Construir la vista de combate (tablero propio + tablero rival) que
+   consume "Comenzar partida".
+3. Abrir PR de `jorge-view` a `master` una vez el equipo dé el visto bueno
+   a los contratos de `GameRepository`, `GameSnapshot`, `ShipType` y
+   `Orientation`.
