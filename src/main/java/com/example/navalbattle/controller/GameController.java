@@ -15,6 +15,7 @@ import com.example.navalbattle.view.shapes.ShipViewFactory;
 import com.example.navalbattle.view.shapes.SunkMarkerView;
 import com.example.navalbattle.view.shapes.WaterMarkerView;
 import javafx.animation.PauseTransition;
+import com.example.navalbattle.facade.GameFacade;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -47,7 +48,8 @@ import javafx.util.Duration;
  * {@link GameEngine#playAiTurn()}.
  *
  * @author Jorge Navia
- * @version 1.0
+ * @author Carlos Meneses
+ * @version 2.0
  */
 public class GameController {
 
@@ -63,7 +65,7 @@ public class GameController {
     @FXML
     private Label turnLabel;
 
-    private GameEngine engine;
+    private GameFacade facade;
 
     /**
      * Punto de inyección del motor de partida: quien abra esta vista
@@ -76,14 +78,14 @@ public class GameController {
      * @param engine motor de partida (real o de prueba)
      */
     public void setGameEngine(GameEngine engine) {
-        this.engine = engine;
+        this.facade = new GameFacade(engine);
         renderOwnFleet();
         setupEnemyBoardClicks();
         refreshTurnLabel();
     }
 
     private void renderOwnFleet() {
-        for (ShipPlacement placement : engine.getPlayerFleet()) {
+        for (ShipPlacement placement : facade.getPlayerFleet()) {
             GridCoordinate start = new GridCoordinate(placement.startRow(), placement.startColumn());
             ownBoard.placeShipFigure(start, placement.type(), placement.orientation());
         }
@@ -99,11 +101,11 @@ public class GameController {
     }
 
     private void handleEnemyCellClicked(BoardCell cell) {
-        if (engine.isGameOver() || !engine.isPlayerTurn()) {
+        if (facade.isGameOver() || !facade.isPlayerTurn()) {
             return;
         }
         try {
-            ShotOutcome outcome = engine.shootOpponent(cell.getRow(), cell.getColumn());
+            ShotOutcome outcome = facade.playerShoot(cell.getRow(), cell.getColumn());
             renderShotOutcome(enemyBoard, cell.getRow(), cell.getColumn(), outcome);
             cell.setDisable(true);
             afterPlayerShot();
@@ -113,12 +115,12 @@ public class GameController {
     }
 
     private void afterPlayerShot() {
-        if (engine.isGameOver()) {
+        if (facade.isGameOver()) {
             showGameOverAlert();
             return;
         }
         refreshTurnLabel();
-        if (!engine.isPlayerTurn()) {
+        if (!facade.isPlayerTurn()) {
             playAiTurnAfterDelay();
         }
     }
@@ -126,9 +128,9 @@ public class GameController {
     private void playAiTurnAfterDelay() {
         PauseTransition pause = new PauseTransition(AI_TURN_DELAY);
         pause.setOnFinished(event -> {
-            AiShotOutcome aiShot = engine.playAiTurn();
+            AiShotOutcome aiShot = facade.playAiTurn();
             renderShotOutcome(ownBoard, aiShot.row(), aiShot.column(), aiShot.outcome());
-            if (engine.isGameOver()) {
+            if (facade.isGameOver()) {
                 showGameOverAlert();
             } else {
                 refreshTurnLabel();
@@ -164,11 +166,11 @@ public class GameController {
     }
 
     private void refreshTurnLabel() {
-        turnLabel.setText(engine.isPlayerTurn() ? "Tu turno" : "Turno de la IA…");
+        turnLabel.setText(facade.isPlayerTurn() ? "Tu turno" : "Turno de la IA…");
     }
 
     private void showGameOverAlert() {
-        boolean playerWon = engine.didPlayerWin();
+        boolean playerWon = facade.didPlayerWin();
         Alert alert = new Alert(playerWon ? Alert.AlertType.INFORMATION : Alert.AlertType.WARNING,
                 playerWon ? "¡Hundiste toda la flota enemiga! Ganaste." : "La IA hundió toda tu flota. Perdiste.");
         alert.setHeaderText(null);
