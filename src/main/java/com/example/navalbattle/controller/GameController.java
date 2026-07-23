@@ -130,10 +130,17 @@ public class GameController {
         pause.setOnFinished(event -> {
             AiShotOutcome aiShot = facade.playAiTurn();
             renderShotOutcome(ownBoard, aiShot.row(), aiShot.column(), aiShot.outcome());
+
             if (facade.isGameOver()) {
                 showGameOverAlert();
+                return;
+            }
+
+            if (facade.isPlayerTurn()) {
+                refreshTurnLabel();
             } else {
                 refreshTurnLabel();
+                playAiTurnAfterDelay(); // La IA acertó, así que vuelve a disparar
             }
         });
         pause.play();

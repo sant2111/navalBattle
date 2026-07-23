@@ -21,7 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
+import com.example.navalbattle.model.DefaultGameEngine;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -452,7 +452,7 @@ public class BoardSetupController {
 
         try {
             GameStage gameStage = new GameStage();
-            gameStage.getController().setGameEngine(new MockGameEngine(fleet));
+            gameStage.getController().setGameEngine(new DefaultGameEngine(fleet));
             gameStage.show();
             ((Stage) startGameButton.getScene().getWindow()).close();
         } catch (IOException exception) {
