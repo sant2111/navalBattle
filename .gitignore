@@ -36,5 +36,6 @@ build/
 .vscode/
 
 ### Mac OS ###
-.DS_Storelast-game.dat
+.DS_Store
+last-game.dat
 player-info.txt

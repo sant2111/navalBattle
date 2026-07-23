@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import com.example.navalbattle.model.DefaultGameEngine;
 import com.example.navalbattle.view.GameStage;
 import java.io.IOException;
+import com.example.navalbattle.config.GameSettings;
 
 /**
  * Controlador de {@code welcome-view.fxml}: despacha las tres acciones
@@ -79,7 +80,13 @@ public class WelcomeController {
      */
     @FXML
     private void initialize() {
+
         loadGameButton.setDisable(true);
+        if (GameSettings.isVerifyOpponentBoard()) {
+            viewOpponentBoardButton.setStyle(
+                    "-fx-background-color: #4CAF50; -fx-text-fill: white;"
+            );
+        }
     }
 
     /**
@@ -137,8 +144,18 @@ public class WelcomeController {
      */
     @FXML
     private void handleViewOpponentBoardAction() {
-        // TODO: HU-3 — mostrar el tablero del oponente en modo verificación
-        // cuando el modelo exponga el tablero/IA generados.
+
+        boolean enabled = !GameSettings.isVerifyOpponentBoard();
+
+        GameSettings.setVerifyOpponentBoard(enabled);
+
+        if (enabled) {
+            viewOpponentBoardButton.setStyle(
+                    "-fx-background-color: #4CAF50; -fx-text-fill: white;"
+            );
+        } else {
+            viewOpponentBoardButton.setStyle("");
+        }
     }
 
     private void showErrorAlert(String message) {

@@ -1,11 +1,9 @@
 package com.example.navalbattle.controller;
 
+import com.example.navalbattle.config.GameSettings;
 import com.example.navalbattle.model.Orientation;
 import com.example.navalbattle.model.ShipType;
-import com.example.navalbattle.view.BoardCell;
-import com.example.navalbattle.view.GameStage;
-import com.example.navalbattle.view.GridBoardPane;
-import com.example.navalbattle.view.GridCoordinate;
+import com.example.navalbattle.view.*;
 import com.example.navalbattle.view.shapes.ShipViewFactory;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -478,9 +476,23 @@ public class BoardSetupController {
 
 
         try {
+            DefaultGameEngine engine = new DefaultGameEngine(fleet);
+
             GameStage gameStage = new GameStage();
-            gameStage.getController().setGameEngine(new DefaultGameEngine(fleet));
+            gameStage.getController().setGameEngine(engine);
+
+            if (GameSettings.isVerifyOpponentBoard()) {
+
+                OpponentBoardVerificationStage verificationStage =
+                        new OpponentBoardVerificationStage(engine);
+
+                verificationStage.show();
+
+                GameSettings.setVerifyOpponentBoard(false);
+            }
+
             gameStage.show();
+
             ((Stage) startGameButton.getScene().getWindow()).close();
         } catch (IOException exception) {
             showErrorAlert("No se pudo abrir el tablero de combate.");
