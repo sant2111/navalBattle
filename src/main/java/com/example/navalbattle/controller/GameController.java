@@ -20,6 +20,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
+import com.example.navalbattle.persistence.PlayerInfoRepository;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * Controlador de {@code game-view.fxml}: el tablero de combate con la
@@ -107,6 +111,24 @@ public class GameController {
         try {
             ShotOutcome outcome = facade.playerShoot(cell.getRow(), cell.getColumn());
             renderShotOutcome(enemyBoard, cell.getRow(), cell.getColumn(), outcome);
+            if (outcome.result() == ShotResult.SUNK) {
+
+                PlayerInfoRepository repository = new PlayerInfoRepository();
+
+                int sunk = repository.getShipsSunk();
+
+                // Leer el nickname del archivo
+                String nickname = "Jugador";
+                try (BufferedReader reader = new BufferedReader(new FileReader("player-info.txt"))) {
+                    String line = reader.readLine();
+                    if (line != null && line.startsWith("Nickname=")) {
+                        nickname = line.substring("Nickname=".length());
+                    }
+                } catch (IOException ignored) {
+                }
+
+                repository.save(nickname, sunk + 1);
+            }
             facade.saveGame();
             cell.setDisable(true);
             afterPlayerShot();

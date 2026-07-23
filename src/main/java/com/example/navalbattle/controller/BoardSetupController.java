@@ -32,6 +32,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import javafx.scene.control.TextInputDialog;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Optional;
+import com.example.navalbattle.persistence.PlayerInfoRepository;
 
 /**
  * Controlador de {@code board-setup-view.fxml}: coloca la flota fija del
@@ -449,6 +454,28 @@ public class BoardSetupController {
             fleet.add(new com.example.navalbattle.model.ShipPlacement(
                     placement.getType(), start.row(), start.column(), placement.getOrientation()));
         }
+
+        TextInputDialog dialog = new TextInputDialog();
+
+        dialog.setTitle("Nuevo juego");
+        dialog.setHeaderText("Ingrese su nickname");
+        dialog.setContentText("Nickname:");
+
+        Optional<String> result = dialog.showAndWait();
+
+        if (result.isEmpty()) {
+            return;
+        }
+
+        String nickname = result.get().trim();
+
+        if (nickname.isEmpty()) {
+            nickname = "Jugador";
+        }
+
+        PlayerInfoRepository playerInfoRepository = new PlayerInfoRepository();
+        playerInfoRepository.save(nickname, 0);
+
 
         try {
             GameStage gameStage = new GameStage();
