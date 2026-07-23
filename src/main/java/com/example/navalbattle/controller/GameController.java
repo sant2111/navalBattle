@@ -1,11 +1,8 @@
 package com.example.navalbattle.controller;
 
 import com.example.navalbattle.exceptions.OutOfBoundsShotException;
-import com.example.navalbattle.model.AiShotOutcome;
-import com.example.navalbattle.model.GameEngine;
-import com.example.navalbattle.model.Orientation;
+import com.example.navalbattle.model.*;
 import com.example.navalbattle.model.ShipPlacement;
-import com.example.navalbattle.model.ShotOutcome;
 import com.example.navalbattle.view.BoardCell;
 import com.example.navalbattle.view.GridBoardPane;
 import com.example.navalbattle.view.GridCoordinate;
