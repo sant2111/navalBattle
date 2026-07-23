@@ -17,8 +17,9 @@ import java.util.Map;
 
 /**
  * Grilla reutilizable de 10x10 con encabezados de coordenadas siempre
- * visibles (columnas A-J, filas 1-10), usada en la colocación de la flota
- * y, más adelante, en el tablero de disparo.
+ * visibles (columnas A-J, filas 1-10), usada tanto en la colocación de
+ * la flota (siluetas de barcos) como en el tablero de combate
+ * (marcadores de agua/tocado/hundido).
  * <p>
  * Combina dos capas EXACTAMENTE alineadas entre sí: la grilla de celdas
  * de agua ({@link BoardCell}), con cada fila y columna (incluidos los
@@ -136,11 +137,38 @@ public class GridBoardPane extends Pane {
      * @param orientation orientación del barco
      */
     public void placeShipFigure(GridCoordinate start, ShipType type, Orientation orientation) {
-        ShipView figure = ShipViewFactory.createShipView(type, BoardCell.CELL_SIZE, orientation);
+        placeShipFigure(start, ShipViewFactory.createShipView(type, BoardCell.CELL_SIZE, orientation));
+    }
+
+    /**
+     * Dibuja una silueta de barco YA CONSTRUIDA (por ejemplo, ya marcada
+     * como hundida con {@code ShipView.markSunk()}) sobre la capa de
+     * superposición, comenzando en la coordenada dada.
+     *
+     * @param start  coordenada donde inicia el barco
+     * @param figure silueta ya construida
+     */
+    public void placeShipFigure(GridCoordinate start, ShipView figure) {
         figure.setLayoutX(start.column() * BoardCell.CELL_SIZE + figure.getGridOffsetX());
         figure.setLayoutY(start.row() * BoardCell.CELL_SIZE + figure.getGridOffsetY());
         shipOverlay.getChildren().add(figure);
         placedShipFigures.put(start, figure);
+    }
+
+    /**
+     * Dibuja un marcador de una sola celda (agua, tocado) centrado
+     * dentro de esa celda.
+     *
+     * @param at         coordenada de la celda marcada
+     * @param marker     figura del marcador (ver {@code view.shapes})
+     * @param markerSize lado del área cuadrada que ocupa el marcador
+     */
+    public void placeMarker(GridCoordinate at, Node marker, double markerSize) {
+        double offset = (BoardCell.CELL_SIZE - markerSize) / 2;
+        marker.setLayoutX(at.column() * BoardCell.CELL_SIZE + offset);
+        marker.setLayoutY(at.row() * BoardCell.CELL_SIZE + offset);
+        shipOverlay.getChildren().add(marker);
+        placedShipFigures.put(at, marker);
     }
 
     /**

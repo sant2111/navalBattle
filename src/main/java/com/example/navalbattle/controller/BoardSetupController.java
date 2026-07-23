@@ -21,7 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
+import com.example.navalbattle.model.DefaultGameEngine;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -431,17 +431,28 @@ public class BoardSetupController {
     }
 
     /**
-     * Maneja el clic en "Comenzar partida": abre {@link GameStage}.
+     * Maneja el clic en "Comenzar partida": convierte la flota colocada
+     * a {@link com.example.navalbattle.model.ShipPlacement} y abre
+     * {@link GameStage}.
      * <p>
-     * ⚠️ IMPACTO AL EQUIPO: por ahora {@link GameStage} solo muestra el
-     * layout del tablero de combate; falta conectar la flota realmente
-     * colocada y la lógica de turnos/disparos una vez exista el motor
-     * real de modelo/IA.
+     * ⚠️ IMPACTO AL EQUIPO: usa {@code MockGameEngine} (temporal, coloca
+     * la flota de la IA al azar y no tiene estrategia real) porque el
+     * motor real de modelo/IA todavía no existe. Cuando exista, solo hay
+     * que cambiar qué implementación de {@code GameEngine} se inyecta
+     * aquí; el resto de la vista de combate no debería necesitar cambios.
      */
     @FXML
     private void handleStartGameAction() {
+        List<com.example.navalbattle.model.ShipPlacement> fleet = new ArrayList<>();
+        for (ShipPlacement placement : placementHistory) {
+            GridCoordinate start = placement.getStart();
+            fleet.add(new com.example.navalbattle.model.ShipPlacement(
+                    placement.getType(), start.row(), start.column(), placement.getOrientation()));
+        }
+
         try {
             GameStage gameStage = new GameStage();
+            gameStage.getController().setGameEngine(new DefaultGameEngine(fleet));
             gameStage.show();
             ((Stage) startGameButton.getScene().getWindow()).close();
         } catch (IOException exception) {

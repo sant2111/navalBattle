@@ -99,9 +99,8 @@ heurística responde. Prioridad para este proyecto:
 ## ESTADO ACTUAL DEL PROYECTO
 
 **Fecha:** 2026-07-12
-**Última rama activa:** `jorge-view` (push al remoto, PR #1 abierto a `master`:
-https://github.com/sant2111/navalBattle/pull/1, aún sin mergear)
-**Último commit:** feat(view): agrega layout del tablero de combate (tablero propio + rival)
+**Última rama activa:** `jorge-view` (creada desde `master`, nunca mergeada aún)
+**Último commit:** `0d98576` — feat(view): agrega BoardSetupStage con colocacion de flota por arrastre
 **Componentes visuales completados:**
 - Estructura MVC de paquetes con `package-info.java` (commit `5472e85`).
 - `WelcomeStage` + `welcome-view.fxml` + `WelcomeController`: pantalla de
@@ -117,11 +116,8 @@ https://github.com/sant2111/navalBattle/pull/1, aún sin mergear)
   resaltado verde/rojo en tiempo real. Un barco ya colocado se puede
   volver a arrastrar para moverlo o rotar con doble clic. Pila (`Deque`)
   para "Deshacer", Lista para la flota pendiente, colocación aleatoria y
-  reinicio de tablero. "Comenzar partida" abre `GameStage`.
-- `GameStage` + `game-view.fxml` + `GameController`: layout del tablero
-  de combate (tu flota a la vista + aguas enemigas), con rótulo de turno.
-  Es solo la estructura visual: falta que el equipo de modelo/IA conecte
-  la lógica real de turnos, disparos, resultados e IA.
+  reinicio de tablero. "Comenzar partida" solo un `Alert` provisional
+  (TODO: navegar a `GameStage` cuando exista el modelo/IA).
 - **Figuras 2D de barcos rediseñadas** en `view.shapes` (paquete nuevo):
   `ShipView` (clase base, template method) + `CarrierView`/`SubmarineView`/
   `DestroyerView`/`FrigateView` (siluetas navales reconocibles, con
@@ -148,9 +144,8 @@ https://github.com/sant2111/navalBattle/pull/1, aún sin mergear)
 
 **Próxima tarea pendiente:**
 1. Quitar `ShipShowcaseStage` y el atajo F9 antes de la entrega final.
-2. El equipo de modelo/IA debe conectar la lógica real de turnos,
-   disparos, resultados y flota sobre `GameStage`/`GameController`.
-3. Conectar `persistence.GameRepository` real (botón "Cargar último
-   juego" ya está listo en la vista, solo esperando la implementación).
-4. Seguir el PR #1 hasta que el equipo lo revise y se pueda mergear a
-   `master`.
+2. Construir la vista de combate (tablero propio + tablero rival) que
+   consume "Comenzar partida".
+3. Abrir PR de `jorge-view` a `master` una vez el equipo dé el visto bueno
+   a los contratos de `GameRepository`, `GameSnapshot`, `ShipType` y
+   `Orientation`.

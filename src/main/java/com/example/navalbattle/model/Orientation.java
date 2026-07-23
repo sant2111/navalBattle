@@ -7,7 +7,7 @@ package com.example.navalbattle.model;
  * valor adicional; por ahora solo se admiten las dos orientaciones
  * ortogonales estándar de Batalla Naval.
  *
- * @author Jorge Navia
+ * @author Santiago Barragan
  * @version 1.0
  */
 public enum Orientation {

@@ -33,4 +33,6 @@ public interface GameRepository {
      *                                      reconstruir de forma consistente
      */
     GameSnapshot loadLastGame() throws GameStateCorruptedException;
+
+    void save(GameSnapshot snapshot);
 }
