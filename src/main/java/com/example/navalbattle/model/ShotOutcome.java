@@ -10,7 +10,7 @@ package com.example.navalbattle.model;
  * @param result   resultado del disparo
  * @param sunkShip colocación del barco hundido, o {@code null} si
  *                 {@code result} no es {@link ShotResult#SUNK}
- * @author Jorge Navia
+ * @author Santiago Barragan
  * @version 1.0
  */
 public record ShotOutcome(ShotResult result, ShipPlacement sunkShip) {

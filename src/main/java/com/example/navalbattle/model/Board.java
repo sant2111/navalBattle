@@ -24,7 +24,7 @@ import java.util.Set;
  * No valida separación mínima entre barcos porque el enunciado no la exige
  * (los barcos pueden quedar adyacentes).
  *
- * @author Jorge Navia
+ * @author Santiago Barragan
  * @version 1.0
  */
 public class Board {
@@ -132,5 +132,13 @@ public class Board {
             placements.add(ship.getPlacement());
         }
         return List.copyOf(placements);
+    }
+
+    /**
+     * @return las casillas ya disparadas sobre este tablero (lista de solo
+     *         lectura); sirve para capturar y restaurar el estado de la partida
+     */
+    public List<Coordinate> getFiredShots() {
+        return List.copyOf(firedShots);
     }
 }

@@ -1,5 +1,7 @@
 package com.example.navalbattle.model;
 
+import java.io.Serializable;
+
 /**
  * Coordenada de fila/columna dentro del tablero, en la capa {@code model}.
  * <p>
@@ -13,10 +15,13 @@ package com.example.navalbattle.model;
  *
  * @param row    fila, válida entre {@link GameConstants#MIN_INDEX} y {@link GameConstants#MAX_INDEX}
  * @param column columna, válida entre {@link GameConstants#MIN_INDEX} y {@link GameConstants#MAX_INDEX}
- * @author Jorge Navia
+ * @author Santiago Barragan
  * @version 1.0
  */
-public record Coordinate(int row, int column) {
+public record Coordinate(int row, int column) implements Serializable {
+
+    /** Identificador de versión para la serialización de la partida guardada. */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Indica si la coordenada cae dentro de los límites del tablero.

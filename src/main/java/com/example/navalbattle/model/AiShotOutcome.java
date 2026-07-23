@@ -9,7 +9,7 @@ package com.example.navalbattle.model;
  * @param row     fila donde disparó la IA, de 0 a 9
  * @param column  columna donde disparó la IA, de 0 a 9
  * @param outcome resultado de ese disparo
- * @author Jorge Navia
+ * @author Santiago Barragan
  * @version 1.0
  */
 public record AiShotOutcome(int row, int column, ShotOutcome outcome) {

@@ -18,7 +18,7 @@ import java.util.Set;
  * barco se hunde: la vista lo necesita para revelar la silueta completa
  * (heurística 4 de Nielsen: consistencia con la figura mostrada al colocar).
  *
- * @author Jorge Navia
+ * @author Santiago Barragan
  * @version 1.0
  */
 public class Ship {

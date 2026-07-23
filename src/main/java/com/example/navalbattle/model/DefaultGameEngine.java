@@ -26,7 +26,7 @@ import java.util.Random;
  * motor de prueba se hace inyectando esta clase donde hoy se instancia
  * {@code MockGameEngine}; ninguno de esos dos cambios es de la capa de modelo.
  *
- * @author Jorge Navia
+ * @author Santiago Barragan
  * @version 1.0
  */
 public class DefaultGameEngine implements GameEngine {
@@ -63,31 +63,80 @@ public class DefaultGameEngine implements GameEngine {
     public DefaultGameEngine(List<ShipPlacement> playerFleet, ShotStrategy aiStrategy) {
         this.shipFactory = new ShipFactory();
         this.aiStrategy = aiStrategy;
-        this.playerBoard = buildPlayerBoard(playerFleet);
+        this.playerBoard = buildBoardFrom(playerFleet);
         this.aiBoard = buildRandomAiBoard();
     }
 
     /**
-     * Reconstruye el tablero del jugador a partir de las colocaciones que ya
-     * validó la vista de configuración.
+     * Reconstruye el motor desde una partida guardada, con la estrategia de
+     * disparo aleatoria por defecto.
      *
-     * @param playerFleet colocaciones de la flota del jugador
-     * @return el tablero del jugador con su flota colocada
-     * @throws GameStateCorruptedException si una colocación llega inválida, lo
-     *                                     que indicaría una ruptura del contrato
-     *                                     con la vista (no una entrada del usuario)
+     * @param snapshot estado serializable de la partida a restaurar
      */
-    private Board buildPlayerBoard(List<ShipPlacement> playerFleet) {
+    public DefaultGameEngine(GameSnapshot snapshot) {
+        this(snapshot, new RandomShotStrategy());
+    }
+
+    /**
+     * Reconstruye el motor desde una partida guardada, con una estrategia de
+     * disparo dada. Rearma ambos tableros desde sus flotas guardadas y vuelve a
+     * aplicar los disparos para restaurar el estado de tocado/hundido.
+     *
+     * @param snapshot   estado serializable de la partida a restaurar
+     * @param aiStrategy estrategia con la que la IA elegirá sus blancos
+     */
+    public DefaultGameEngine(GameSnapshot snapshot, ShotStrategy aiStrategy) {
+        this.shipFactory = new ShipFactory();
+        this.aiStrategy = aiStrategy;
+        this.playerBoard = buildBoardFrom(snapshot.playerFleet());
+        this.aiBoard = buildBoardFrom(snapshot.aiFleet());
+        replayShots(aiBoard, snapshot.playerShots());
+        replayShots(playerBoard, snapshot.aiShots());
+        this.playerTurn = snapshot.playerTurn();
+    }
+
+    /**
+     * Arma un tablero a partir de una lista de colocaciones: sirve tanto para
+     * la flota real que colocó el jugador como para cualquiera de las dos
+     * flotas al restaurar una partida guardada.
+     *
+     * @param fleet colocaciones de la flota a colocar
+     * @return el tablero con su flota colocada
+     * @throws GameStateCorruptedException si una colocación llega inválida, lo
+     *                                     que indicaría una ruptura de contrato
+     *                                     (no una entrada del usuario)
+     */
+    private Board buildBoardFrom(List<ShipPlacement> fleet) {
         Board board = new Board();
-        for (ShipPlacement placement : playerFleet) {
+        for (ShipPlacement placement : fleet) {
             try {
                 board.placeShip(shipFactory.create(placement));
             } catch (InvalidShipPlacementException exception) {
                 throw new GameStateCorruptedException(
-                        "La flota del jugador llegó con una colocación inválida al motor.", exception);
+                        "Una colocación llegó inválida al motor de juego.", exception);
             }
         }
         return board;
+    }
+
+    /**
+     * Vuelve a aplicar sobre un tablero los disparos guardados, para restaurar
+     * su estado de tocado/hundido al cargar una partida.
+     *
+     * @param board tablero sobre el que se realizaron esos disparos
+     * @param shots casillas disparadas (el orden no altera el resultado)
+     * @throws GameStateCorruptedException si un disparo guardado cae fuera del
+     *                                     tablero (partida corrupta)
+     */
+    private void replayShots(Board board, List<Coordinate> shots) {
+        for (Coordinate shot : shots) {
+            try {
+                board.receiveShot(shot);
+            } catch (OutOfBoundsShotException exception) {
+                throw new GameStateCorruptedException(
+                        "La partida guardada contiene un disparo fuera del tablero.", exception);
+            }
+        }
     }
 
     /**
@@ -207,5 +256,25 @@ public class DefaultGameEngine implements GameEngine {
     @Override
     public List<ShipPlacement> getPlayerFleet() {
         return playerBoard.getFleetPlacements();
+    }
+
+    @Override
+    public List<ShipPlacement> getOpponentFleet() {
+        return aiBoard.getFleetPlacements();
+    }
+
+    /**
+     * Captura el estado actual de la partida como un {@link GameSnapshot}
+     * serializable, para que la capa de persistencia lo guarde.
+     *
+     * @return el estado serializable de la partida en curso
+     */
+    public GameSnapshot toSnapshot() {
+        return new GameSnapshot(
+                playerBoard.getFleetPlacements(),
+                aiBoard.getFleetPlacements(),
+                aiBoard.getFiredShots(),
+                playerBoard.getFiredShots(),
+                playerTurn);
     }
 }
