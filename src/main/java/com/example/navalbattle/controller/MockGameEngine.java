@@ -223,4 +223,14 @@ final class MockGameEngine implements GameEngine {
     public List<Coordinate> getAiShots() {
         return List.of();
     }
+
+    @Override
+    public Board getPlayerBoard() {
+        return null;
+    }
+
+    @Override
+    public Board getOpponentBoard() {
+        return null;
+    }
 }

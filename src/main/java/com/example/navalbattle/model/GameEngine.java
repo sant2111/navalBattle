@@ -76,4 +76,7 @@ public interface GameEngine {
 
     List<Coordinate> getAiShots();
 
+    Board getPlayerBoard();
+
+    Board getOpponentBoard();
 }

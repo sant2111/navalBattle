@@ -288,4 +288,13 @@ public class DefaultGameEngine implements GameEngine {
         return playerBoard.getFiredShots();
     }
 
+    @Override
+    public Board getPlayerBoard() {
+        return playerBoard;
+    }
+
+    @Override
+    public Board getOpponentBoard() {
+        return aiBoard;
+    }
 }

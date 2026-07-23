@@ -21,6 +21,8 @@ import com.example.navalbattle.persistence.PlayerInfoRepository;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Controlador de {@code game-view.fxml}: el tablero de combate con la
@@ -80,8 +82,13 @@ public class GameController {
      */
     public void setGameEngine(GameEngine engine) {
         this.facade = new GameFacade(engine);
+
         renderOwnFleet();
+
+        restoreShotMarkers();
+
         setupEnemyBoardClicks();
+
         refreshTurnLabel();
     }
 
@@ -173,6 +180,56 @@ public class GameController {
             case WATER -> board.placeMarker(coordinate, new WaterMarkerView(MARKER_SIZE), MARKER_SIZE);
             case HIT -> board.placeMarker(coordinate, new HitMarkerView(MARKER_SIZE), MARKER_SIZE);
             case SUNK -> revealSunkShip(board, outcome.sunkShip());
+        }
+    }
+
+    private void restoreShotMarkers() {
+
+        restoreBoard(enemyBoard, facade.getOpponentBoard());
+        restoreBoard(ownBoard, facade.getPlayerBoard());
+
+    }
+
+    private void restoreBoard(GridBoardPane boardPane, Board board) {
+
+        Set<Ship> revealedShips = new HashSet<>();
+
+        for (Coordinate coordinate : board.getFiredShots()) {
+
+            Ship ship = board.shipAt(coordinate);
+            if (ship == null) {
+
+                boardPane.placeMarker(
+                        new GridCoordinate(coordinate.row(), coordinate.column()),
+                        new WaterMarkerView(MARKER_SIZE),
+                        MARKER_SIZE
+                );
+
+                boardPane.getCell(coordinate.row(), coordinate.column())
+                        .setDisable(true);
+
+            }
+            else if (ship.isSunk()) {
+
+                if (revealedShips.add(ship)) {
+                    revealSunkShip(boardPane, ship.getPlacement());
+                }
+
+            }
+            else {
+
+                boardPane.placeMarker(
+                        new GridCoordinate(coordinate.row(), coordinate.column()),
+                        new HitMarkerView(MARKER_SIZE),
+                        MARKER_SIZE
+                );
+
+                boardPane.getCell(coordinate.row(), coordinate.column())
+                        .setDisable(true);
+
+            }
+
+
         }
     }
 

@@ -77,4 +77,12 @@ public class GameFacade {
         return engine.getAiShots();
     }
 
+    public Board getPlayerBoard() {
+        return engine.getPlayerBoard();
+    }
+
+    public Board getOpponentBoard() {
+        return engine.getOpponentBoard();
+    }
+
 }
