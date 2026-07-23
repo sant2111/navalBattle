@@ -9,7 +9,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-
+import com.example.navalbattle.model.DefaultGameEngine;
+import com.example.navalbattle.view.GameStage;
 import java.io.IOException;
 
 /**
@@ -113,10 +114,19 @@ public class WelcomeController {
             return;
         }
         try {
+
             GameSnapshot snapshot = gameRepository.loadLastGame();
-            // TODO: navegar a BoardSetupStage/GameStage con 'snapshot' cuando esa vista exista.
+
+            GameStage gameStage = new GameStage();
+            gameStage.getController().setGameEngine(new DefaultGameEngine(snapshot));
+
+            gameStage.show();
+            currentStage().close();
+
         } catch (GameStateCorruptedException exception) {
             showErrorAlert(UiConstants.CORRUPTED_SAVE_MESSAGE);
+        } catch (IOException exception) {
+            showErrorAlert("No se pudo abrir la partida guardada.");
         }
     }
 

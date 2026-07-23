@@ -71,4 +71,9 @@ public interface GameEngine {
     default List<ShipPlacement> getOpponentFleet() {
         return List.of();
     }
+
+    List<Coordinate> getPlayerShots();
+
+    List<Coordinate> getAiShots();
+
 }

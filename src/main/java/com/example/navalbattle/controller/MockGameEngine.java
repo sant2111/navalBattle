@@ -1,13 +1,8 @@
 package com.example.navalbattle.controller;
 
 import com.example.navalbattle.exceptions.OutOfBoundsShotException;
-import com.example.navalbattle.model.AiShotOutcome;
-import com.example.navalbattle.model.GameEngine;
-import com.example.navalbattle.model.Orientation;
+import com.example.navalbattle.model.*;
 import com.example.navalbattle.model.ShipPlacement;
-import com.example.navalbattle.model.ShipType;
-import com.example.navalbattle.model.ShotOutcome;
-import com.example.navalbattle.model.ShotResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -217,5 +212,15 @@ final class MockGameEngine implements GameEngine {
     @Override
     public List<ShipPlacement> getPlayerFleet() {
         return List.copyOf(playerFleet);
+    }
+
+    @Override
+    public List<Coordinate> getPlayerShots() {
+        return List.of();
+    }
+
+    @Override
+    public List<Coordinate> getAiShots() {
+        return List.of();
     }
 }

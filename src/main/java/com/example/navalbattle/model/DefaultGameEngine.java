@@ -277,4 +277,15 @@ public class DefaultGameEngine implements GameEngine {
                 playerBoard.getFiredShots(),
                 playerTurn);
     }
+
+    @Override
+    public List<Coordinate> getPlayerShots() {
+        return aiBoard.getFiredShots();
+    }
+
+    @Override
+    public List<Coordinate> getAiShots() {
+        return playerBoard.getFiredShots();
+    }
+
 }

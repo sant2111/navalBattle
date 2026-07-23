@@ -107,6 +107,7 @@ public class GameController {
         try {
             ShotOutcome outcome = facade.playerShoot(cell.getRow(), cell.getColumn());
             renderShotOutcome(enemyBoard, cell.getRow(), cell.getColumn(), outcome);
+            facade.saveGame();
             cell.setDisable(true);
             afterPlayerShot();
         } catch (OutOfBoundsShotException exception) {
@@ -130,6 +131,7 @@ public class GameController {
         pause.setOnFinished(event -> {
             AiShotOutcome aiShot = facade.playAiTurn();
             renderShotOutcome(ownBoard, aiShot.row(), aiShot.column(), aiShot.outcome());
+            facade.saveGame();
 
             if (facade.isGameOver()) {
                 showGameOverAlert();

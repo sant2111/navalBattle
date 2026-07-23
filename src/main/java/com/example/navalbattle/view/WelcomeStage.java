@@ -5,6 +5,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import com.example.navalbattle.controller.WelcomeController;
+import com.example.navalbattle.persistence.FileGameRepository;
 
 import java.io.IOException;
 
@@ -34,6 +36,9 @@ public class WelcomeStage extends Stage {
     public WelcomeStage() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(UiConstants.WELCOME_VIEW_FXML));
         Parent root = loader.load();
+
+        WelcomeController controller = loader.getController();
+        controller.setGameRepository(new FileGameRepository());
 
         Scene scene = new Scene(root, UiConstants.WELCOME_WIDTH, UiConstants.WELCOME_HEIGHT);
         scene.getStylesheets().add(getClass().getResource(UiConstants.MAIN_STYLESHEET).toExternalForm());

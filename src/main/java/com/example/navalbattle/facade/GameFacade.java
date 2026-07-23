@@ -2,6 +2,9 @@ package com.example.navalbattle.facade;
 
 import com.example.navalbattle.exceptions.OutOfBoundsShotException;
 import com.example.navalbattle.model.*;
+import com.example.navalbattle.persistence.GameRepository;
+import com.example.navalbattle.persistence.FileGameRepository;
+
 
 import java.util.List;
 
@@ -22,6 +25,7 @@ import java.util.List;
 public class GameFacade {
 
     private final GameEngine engine;
+    private final GameRepository repository;
 
 
     /**
@@ -31,6 +35,7 @@ public class GameFacade {
      */
     public GameFacade(GameEngine engine) {
         this.engine = engine;
+        this.repository = new FileGameRepository();
     }
 
     public List<ShipPlacement> getPlayerFleet() {
@@ -46,6 +51,12 @@ public class GameFacade {
         return engine.playAiTurn();
     }
 
+    public void saveGame() {
+        if (engine instanceof DefaultGameEngine defaultGameEngine) {
+            repository.save(defaultGameEngine.toSnapshot());
+        }
+    }
+
     public boolean isPlayerTurn() {
         return engine.isPlayerTurn();
     }
@@ -57,4 +68,13 @@ public class GameFacade {
     public boolean didPlayerWin() {
         return engine.didPlayerWin();
     }
+
+    public List<Coordinate> getPlayerShots() {
+        return engine.getPlayerShots();
+    }
+
+    public List<Coordinate> getAiShots() {
+        return engine.getAiShots();
+    }
+
 }
