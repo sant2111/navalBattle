@@ -23,6 +23,8 @@ import java.util.List;
 public interface GameEngine {
 
     /**
+     * Indica si actualmente corresponde el turno del jugador humano.
+     *
      * @return {@code true} si le corresponde disparar al jugador humano
      */
     boolean isPlayerTurn();
@@ -30,7 +32,7 @@ public interface GameEngine {
     /**
      * Dispara, de parte del jugador, a una celda del tablero del rival.
      *
-     * @param row    fila del disparo, de 0 a 9
+     * @param row fila del disparo, de 0 a 9
      * @param column columna del disparo, de 0 a 9
      * @return el resultado del disparo
      * @throws OutOfBoundsShotException si la coordenada está fuera del tablero
@@ -46,13 +48,25 @@ public interface GameEngine {
      */
     AiShotOutcome playAiTurn();
 
-    /** @return {@code true} si la partida ya terminó (un bando sin flota) */
+    /**
+     * Determina si la partida ha finalizado.
+     *
+     * @return {@code true} si la partida ya terminó (un bando sin flota)
+     */
     boolean isGameOver();
 
-    /** @return {@code true} si quien ganó la partida fue el jugador humano */
+    /**
+     * Indica si el ganador de la partida fue el jugador humano.
+     *
+     * @return {@code true} si quien ganó la partida fue el jugador humano
+     */
     boolean didPlayerWin();
 
-    /** @return la flota del jugador, para que la vista la dibuje en su propio tablero */
+    /**
+     * Obtiene la flota del jugador para ser representada en la vista.
+     *
+     * @return flota del jugador
+     */
     List<ShipPlacement> getPlayerFleet();
 
     /**
@@ -72,11 +86,33 @@ public interface GameEngine {
         return List.of();
     }
 
+    /**
+     * Obtiene el historial de disparos realizados por el jugador durante la
+     * partida.
+     *
+     * @return lista de coordenadas disparadas por el jugador
+     */
     List<Coordinate> getPlayerShots();
 
+    /**
+     * Obtiene el historial de disparos realizados por la inteligencia
+     * artificial.
+     *
+     * @return lista de coordenadas disparadas por la IA
+     */
     List<Coordinate> getAiShots();
 
+    /**
+     * Obtiene el tablero correspondiente al jugador.
+     *
+     * @return tablero del jugador
+     */
     Board getPlayerBoard();
 
+    /**
+     * Obtiene el tablero correspondiente al oponente.
+     *
+     * @return tablero del oponente
+     */
     Board getOpponentBoard();
 }

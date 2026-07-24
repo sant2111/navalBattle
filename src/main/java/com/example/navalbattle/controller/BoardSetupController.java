@@ -124,6 +124,11 @@ public class BoardSetupController {
         this.previousStage = previousStage;
     }
 
+    /**
+     * Inicializa la vista de preparación de la partida configurando las
+     * orientaciones iniciales de los barcos, la lista de flota pendiente,
+     * los manejadores de eventos de la grilla y los componentes visuales.
+     */
     @FXML
     private void initialize() {
         for (ShipType type : ShipType.values()) {
@@ -135,6 +140,10 @@ public class BoardSetupController {
         refreshRemainingLabel();
     }
 
+    /**
+     * Llena la lista de barcos pendientes con la composición completa de la
+     * flota definida para la partida.
+     */
     private void fillPendingShipsFromFleet() {
         for (ShipType type : ShipType.values()) {
             for (int unit = 0; unit < type.getFleetCount(); unit++) {
@@ -143,6 +152,10 @@ public class BoardSetupController {
         }
     }
 
+    /**
+     * Asocia a cada celda de la grilla los eventos necesarios para soportar
+     * arrastrar, soltar y rotar barcos durante la fase de preparación.
+     */
     private void setupGridHandlers() {
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int column = 0; column < BOARD_SIZE; column++) {
@@ -178,6 +191,12 @@ public class BoardSetupController {
         event.consume();
     }
 
+    /**
+     * Actualiza la previsualización de la colocación del barco mientras se
+     * arrastra sobre la grilla, resaltando las celdas válidas o inválidas.
+     *
+     * @param event evento de arrastre sobre una celda del tablero
+     */
     private void handleCellDragOver(DragEvent event) {
         if (shipBeingDragged != null && event.getDragboard().hasString()) {
             event.acceptTransferModes(TransferMode.MOVE);
@@ -187,6 +206,12 @@ public class BoardSetupController {
         event.consume();
     }
 
+    /**
+     * Intenta colocar el barco arrastrado en la posición seleccionada. Si la
+     * ubicación es válida, registra la colocación y actualiza la interfaz.
+     *
+     * @param event evento de liberación del arrastre
+     */
     private void handleCellDragDropped(DragEvent event) {
         BoardCell cell = (BoardCell) event.getSource();
         boolean success = false;
@@ -263,6 +288,15 @@ public class BoardSetupController {
         }
     }
 
+    /**
+     * Resalta las celdas que ocuparía un barco si se colocara en la posición
+     * indicada, utilizando un color diferente según la validez de la ubicación.
+     *
+     * @param startRow fila inicial
+     * @param startColumn columna inicial
+     * @param type tipo de barco
+     * @param orientation orientación del barco
+     */
     private void highlightFootprint(int startRow, int startColumn, ShipType type, Orientation orientation) {
         clearHighlights();
         List<GridCoordinate> footprint = ShipPlacement.computeCells(type, startRow, startColumn, orientation);
@@ -276,6 +310,10 @@ public class BoardSetupController {
         }
     }
 
+    /**
+     * Elimina todos los resaltados temporales mostrados durante el proceso de
+     * arrastre de un barco.
+     */
     private void clearHighlights() {
         for (BoardCell cell : highlightedCells) {
             cell.clearHover();
@@ -283,6 +321,14 @@ public class BoardSetupController {
         highlightedCells.clear();
     }
 
+    /**
+     * Verifica si un conjunto de celdas representa una colocación válida para
+     * un barco.
+     *
+     * @param footprint celdas que ocuparía el barco
+     * @return {@code true} si todas las celdas están libres y dentro del tablero;
+     *         {@code false} en caso contrario
+     */
     private boolean isFootprintValid(List<GridCoordinate> footprint) {
         for (GridCoordinate coordinate : footprint) {
             if (!isInBounds(coordinate) || placementByCell.containsKey(coordinate)) {
@@ -292,11 +338,24 @@ public class BoardSetupController {
         return true;
     }
 
+    /**
+     * Determina si una coordenada pertenece a los límites del tablero.
+     *
+     * @param coordinate coordenada a verificar
+     * @return {@code true} si la coordenada está dentro del tablero;
+     *         {@code false} en caso contrario
+     */
     private boolean isInBounds(GridCoordinate coordinate) {
         return coordinate.row() >= 0 && coordinate.row() < BOARD_SIZE
                 && coordinate.column() >= 0 && coordinate.column() < BOARD_SIZE;
     }
 
+    /**
+     * Registra un barco en el tablero lógico y lo representa gráficamente en
+     * la grilla.
+     *
+     * @param placement colocación que será registrada
+     */
     private void registerPlacement(ShipPlacement placement) {
         for (GridCoordinate coordinate : placement.occupiedCells()) {
             placementByCell.put(coordinate, placement);
@@ -304,6 +363,12 @@ public class BoardSetupController {
         gridBoardPane.placeShipFigure(placement.getStart(), placement.getType(), placement.getOrientation());
     }
 
+    /**
+     * Elimina un barco previamente colocado tanto del tablero lógico como de
+     * la representación gráfica.
+     *
+     * @param placement colocación que será eliminada
+     */
     private void unregisterPlacement(ShipPlacement placement) {
         for (GridCoordinate coordinate : placement.occupiedCells()) {
             placementByCell.remove(coordinate);
@@ -311,6 +376,10 @@ public class BoardSetupController {
         gridBoardPane.clearShipFigure(placement.getStart());
     }
 
+    /**
+     * Revierte la última colocación realizada por el jugador y actualiza el
+     * estado de la interfaz.
+     */
     @FXML
     private void handleUndoAction() {
         if (placementHistory.isEmpty()) {
@@ -326,6 +395,10 @@ public class BoardSetupController {
         startGameButton.setDisable(true);
     }
 
+    /**
+     * Reinicia completamente la preparación de la partida eliminando todas las
+     * colocaciones realizadas y restaurando la flota pendiente.
+     */
     @FXML
     private void handleResetAction() {
         gridBoardPane.clearAllShipFigures();
@@ -340,6 +413,10 @@ public class BoardSetupController {
         startGameButton.setDisable(true);
     }
 
+    /**
+     * Coloca automáticamente todos los barcos restantes en posiciones válidas
+     * seleccionadas aleatoriamente.
+     */
     @FXML
     private void handleRandomPlacementAction() {
         List<ShipType> shipsToPlace = new ArrayList<>(pendingShips);
@@ -352,6 +429,12 @@ public class BoardSetupController {
         startGameButton.setDisable(!pendingShips.isEmpty());
     }
 
+    /**
+     * Intenta ubicar aleatoriamente un barco del tipo indicado dentro del
+     * tablero.
+     *
+     * @param type tipo de barco que será colocado
+     */
     private void placeShipRandomly(ShipType type) {
         for (int attempt = 0; attempt < RANDOM_PLACEMENT_MAX_ATTEMPTS; attempt++) {
             Orientation orientation = random.nextBoolean() ? Orientation.HORIZONTAL : Orientation.VERTICAL;
@@ -368,6 +451,10 @@ public class BoardSetupController {
         }
     }
 
+    /**
+     * Actualiza el panel lateral mostrando los barcos que aún faltan por
+     * colocar.
+     */
     private void refreshFleetPanel() {
         fleetListContainer.getChildren().clear();
         for (ShipType type : ShipType.values()) {
@@ -417,6 +504,9 @@ public class BoardSetupController {
         return row;
     }
 
+    /**
+     * Actualiza el mensaje que indica cuántos barcos faltan por colocar.
+     */
     private void refreshRemainingLabel() {
         int totalRemaining = pendingShips.size();
         remainingShipsLabel.setText(totalRemaining == 0
@@ -424,6 +514,10 @@ public class BoardSetupController {
                 : totalRemaining + " barco(s) por colocar");
     }
 
+    /**
+     * Cierra la ventana actual y vuelve a mostrar la ventana anterior de la
+     * aplicación.
+     */
     @FXML
     private void handleBackAction() {
         Stage currentStage = (Stage) backButton.getScene().getWindow();
@@ -434,15 +528,10 @@ public class BoardSetupController {
     }
 
     /**
-     * Maneja el clic en "Comenzar partida": convierte la flota colocada
-     * a {@link com.example.navalbattle.model.ShipPlacement} y abre
-     * {@link GameStage}.
-     * <p>
-     * ⚠️ IMPACTO AL EQUIPO: usa {@code MockGameEngine} (temporal, coloca
-     * la flota de la IA al azar y no tiene estrategia real) porque el
-     * motor real de modelo/IA todavía no existe. Cuando exista, solo hay
-     * que cambiar qué implementación de {@code GameEngine} se inyecta
-     * aquí; el resto de la vista de combate no debería necesitar cambios.
+     * Inicia una nueva partida a partir de la flota configurada por el jugador.
+     * Solicita el nickname, inicializa la información del jugador para la
+     * persistencia, crea el motor de juego, abre la vista principal y, si está
+     * habilitada, muestra la ventana de verificación del tablero rival.
      */
     @FXML
     private void handleStartGameAction() {
@@ -499,6 +588,11 @@ public class BoardSetupController {
         }
     }
 
+    /**
+     * Muestra un cuadro de diálogo con un mensaje de error.
+     *
+     * @param message descripción del error que se presentará al usuario
+     */
     private void showErrorAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR, message);
         alert.setHeaderText(null);

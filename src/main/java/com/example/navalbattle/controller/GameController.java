@@ -71,14 +71,12 @@ public class GameController {
     private GameFacade facade;
 
     /**
-     * Punto de inyección del motor de partida: quien abra esta vista
-     * debe llamar a este método antes de mostrarla.
-     * <p>
-     * ⚠️ IMPACTO AL EQUIPO: este es el contrato ({@link GameEngine}) que
-     * debe cumplir el motor real de modelo/IA para reemplazar a
-     * {@code MockGameEngine}.
+     * Inicializa el controlador con el motor de juego que administrará la
+     * partida. Además de dibujar la flota propia, restaura los marcadores de
+     * disparos de una partida cargada, configura los eventos de clic sobre el
+     * tablero enemigo y actualiza el indicador de turno.
      *
-     * @param engine motor de partida (real o de prueba)
+     * @param engine motor de juego que controlará la partida actual
      */
     public void setGameEngine(GameEngine engine) {
         this.facade = new GameFacade(engine);
@@ -92,6 +90,11 @@ public class GameController {
         refreshTurnLabel();
     }
 
+
+    /**
+     * Dibuja sobre el tablero propio la flota del jugador utilizando las
+     * colocaciones suministradas por el modelo.
+     */
     private void renderOwnFleet() {
         for (ShipPlacement placement : facade.getPlayerFleet()) {
             GridCoordinate start = new GridCoordinate(placement.startRow(), placement.startColumn());
@@ -99,6 +102,10 @@ public class GameController {
         }
     }
 
+    /**
+     * Asocia el evento de clic a cada celda del tablero enemigo para permitir
+     * que el jugador realice disparos durante su turno.
+     */
     private void setupEnemyBoardClicks() {
         for (int row = 0; row < GridBoardPane.BOARD_SIZE; row++) {
             for (int column = 0; column < GridBoardPane.BOARD_SIZE; column++) {
@@ -108,6 +115,14 @@ public class GameController {
         }
     }
 
+    /**
+     * Procesa el disparo realizado por el jugador sobre una celda del tablero
+     * enemigo. Actualiza la representación gráfica del disparo, registra los
+     * barcos hundidos para la persistencia, guarda el estado de la partida y
+     * continúa el flujo normal del juego.
+     *
+     * @param cell celda del tablero enemigo seleccionada por el jugador
+     */
     private void handleEnemyCellClicked(BoardCell cell) {
         if (facade.isGameOver() || !facade.isPlayerTurn()) {
             return;
@@ -141,6 +156,11 @@ public class GameController {
         }
     }
 
+
+    /**
+     * Verifica si la partida terminó después del disparo del jugador y, en caso
+     * contrario, actualiza el indicador de turno o programa el turno de la IA.
+     */
     private void afterPlayerShot() {
         if (facade.isGameOver()) {
             showGameOverAlert();
@@ -152,6 +172,11 @@ public class GameController {
         }
     }
 
+    /**
+     * Ejecuta el turno de la inteligencia artificial tras una breve pausa para
+     * mejorar la experiencia visual del jugador. Si la IA acierta un disparo,
+     * continuará jugando mientras conserve el turno.
+     */
     private void playAiTurnAfterDelay() {
         PauseTransition pause = new PauseTransition(AI_TURN_DELAY);
         pause.setOnFinished(event -> {
@@ -174,6 +199,16 @@ public class GameController {
         pause.play();
     }
 
+
+    /**
+     * Dibuja sobre el tablero el resultado de un disparo utilizando el marcador
+     * correspondiente (agua, impacto o barco hundido).
+     *
+     * @param board tablero donde se representará el disparo
+     * @param row fila de la casilla impactada
+     * @param column columna de la casilla impactada
+     * @param outcome resultado del disparo
+     */
     private void renderShotOutcome(GridBoardPane board, int row, int column, ShotOutcome outcome) {
         GridCoordinate coordinate = new GridCoordinate(row, column);
         switch (outcome.result()) {
@@ -183,6 +218,11 @@ public class GameController {
         }
     }
 
+    /**
+     * Restaura los marcadores visuales de ambos tableros cuando se carga una
+     * partida previamente guardada, reconstruyendo la representación gráfica de
+     * todos los disparos registrados.
+     */
     private void restoreShotMarkers() {
 
         restoreBoard(enemyBoard, facade.getOpponentBoard());
@@ -190,6 +230,13 @@ public class GameController {
 
     }
 
+    /**
+     * Reconstruye los marcadores de un tablero a partir del estado restaurado por
+     * el modelo, representando disparos al agua, impactos y barcos hundidos.
+     *
+     * @param boardPane tablero gráfico que será actualizado
+     * @param board tablero del modelo desde el cual se obtiene el estado
+     */
     private void restoreBoard(GridBoardPane boardPane, Board board) {
 
         Set<Ship> revealedShips = new HashSet<>();
@@ -233,6 +280,13 @@ public class GameController {
         }
     }
 
+    /**
+     * Revela gráficamente un barco hundido dibujando su silueta y los marcadores
+     * correspondientes sobre todas las casillas que ocupa.
+     *
+     * @param board tablero donde se mostrará el barco hundido
+     * @param sunkShip colocación del barco que fue hundido
+     */
     private void revealSunkShip(GridBoardPane board, ShipPlacement sunkShip) {
         ShipView shipView = ShipViewFactory.createShipView(sunkShip.type(), BoardCell.CELL_SIZE, sunkShip.orientation());
         shipView.markSunk();
@@ -250,10 +304,18 @@ public class GameController {
         }
     }
 
+    /**
+     * Actualiza el mensaje que indica de quién es el turno actual.
+     */
     private void refreshTurnLabel() {
         turnLabel.setText(facade.isPlayerTurn() ? "Tu turno" : "Turno de la IA…");
     }
 
+
+    /**
+     * Muestra un mensaje indicando el resultado final de la partida y actualiza
+     * el indicador de turno con el estado de victoria o derrota.
+     */
     private void showGameOverAlert() {
         boolean playerWon = facade.didPlayerWin();
         Alert alert = new Alert(playerWon ? Alert.AlertType.INFORMATION : Alert.AlertType.WARNING,
