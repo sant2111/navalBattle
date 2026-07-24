@@ -278,21 +278,49 @@ public class DefaultGameEngine implements GameEngine {
                 playerTurn);
     }
 
+    /**
+     * Obtiene el historial de disparos realizados por el jugador sobre el
+     * tablero de la IA.
+     *
+     * @return lista de coordenadas disparadas por el jugador
+     */
     @Override
     public List<Coordinate> getPlayerShots() {
         return aiBoard.getFiredShots();
     }
 
+    /**
+     * Obtiene el historial de disparos realizados por la inteligencia
+     * artificial sobre el tablero del jugador.
+     *
+     * @return lista de coordenadas disparadas por la IA
+     */
     @Override
     public List<Coordinate> getAiShots() {
         return playerBoard.getFiredShots();
     }
 
+    /**
+     * Obtiene el tablero del jugador con su estado actual.
+     * <p>
+     * Se utiliza principalmente para reconstruir la representación gráfica
+     * de la partida al cargar un juego previamente guardado.
+     *
+     * @return tablero del jugador
+     */
     @Override
     public Board getPlayerBoard() {
         return playerBoard;
     }
 
+    /**
+     * Obtiene el tablero del oponente con su estado actual.
+     * <p>
+     * Se utiliza principalmente para reconstruir la representación gráfica
+     * de la partida al cargar un juego previamente guardado.
+     *
+     * @return tablero del oponente
+     */
     @Override
     public Board getOpponentBoard() {
         return aiBoard;

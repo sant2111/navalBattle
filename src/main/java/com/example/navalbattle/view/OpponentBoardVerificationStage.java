@@ -10,8 +10,26 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * Ventana utilizada para verificar visualmente la posición de la flota del
+ * oponente antes de iniciar la partida.
+ * <p>
+ * Muestra el tablero completo de la inteligencia artificial con todas sus
+ * embarcaciones visibles, cumpliendo el requisito de permitir la verificación
+ * del tablero rival. La ventana es modal, por lo que debe cerrarse antes de
+ * continuar con el juego.
+ *
+ * @author Carlos Meneses
+ * @version 1.0
+ */
 public class OpponentBoardVerificationStage extends Stage {
 
+    /**
+     * Crea una ventana modal que muestra la distribución completa de la flota
+     * del oponente.
+     *
+     * @param engine motor de juego desde el cual se obtiene la flota de la IA
+     */
     public OpponentBoardVerificationStage(DefaultGameEngine engine) {
 
         setTitle("Verificación del tablero del oponente");
